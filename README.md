@@ -36,9 +36,9 @@ graph TB
     end
     
     subgraph "HTTP Endpoints"
-        R[/sse/:stream<br/>Server-Sent Events]
-        S[/streams<br/>Available Streams]
-        T[/health<br/>Health Check]
+        R["/sse/:stream<br/>Server-Sent Events"]
+        S["/streams<br/>Available Streams"]
+        T["/health<br/>Health Check"]
     end
     
     subgraph "Clients"
