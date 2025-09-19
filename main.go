@@ -580,8 +580,8 @@ func main() {
 	// Initialize configuration
 	config := &Config{
 		RPCEndpoint: getEnv("RPC_ENDPOINT", "https://dream-rpc.somnia.network"),
-		NATSUrl:     getEnv("NATS_URL", "nats://65.21.153.56:4222"),
-		NATSToken:   getEnv("NATS_TOKEN", "mxHF53zHj0GjiZSX"),
+		NATSUrl:     getEnv("NATS_URL", "nats://localhost:4222"),
+		NATSToken:   getEnv("NATS_TOKEN", "nats_token"),
 		ServerPort:  getEnv("SERVER_PORT", "8080"),
 	}
 
