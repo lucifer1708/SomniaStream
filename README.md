@@ -93,6 +93,7 @@ graph TB
 - **JetStream Integration**: Persistent message streaming with NATS JetStream
 - **HTTP API**: RESTful endpoints for accessing blockchain data
 - **Server-Sent Events**: Real-time streaming to web clients
+- **Web Frontend**: Professional dashboard for real-time data visualization
 - **CORS Enabled**: Cross-origin resource sharing for web applications
 - **Health Monitoring**: Built-in health check endpoints
 - **Configurable**: Environment-based configuration
@@ -191,7 +192,159 @@ curl http://localhost:8080/sse/network
 curl http://localhost:8080/sse/gasPrice
 ```
 
-### Web Client Example
+## 🖥️ Frontend Demo Application
+
+A comprehensive web-based frontend is included to demonstrate the real-time capabilities of Somnia Stream. The frontend provides an intuitive interface for monitoring all available data streams.
+
+### Features
+
+- **Real-time Dashboard**: Live updating display of blockchain data
+- **Multiple Stream Views**: Tabbed interface for different data types
+- **Interactive Controls**: Connect/disconnect, stream selection, auto-scroll
+- **Responsive Design**: Works on desktop, tablet, and mobile devices
+- **Professional UI**: Modern design with animations and visual feedback
+- **Statistics Cards**: Key metrics displayed prominently
+- **Message Feed**: Scrollable history of recent data
+
+### Quick Start
+
+1. **Start the Somnia Stream service**:
+   ```bash
+   ./somnia-stream
+   ```
+
+2. **Open the frontend**:
+   ```bash
+   # Navigate to the frontend directory
+   cd frontend
+   
+   # Serve the files (using any HTTP server)
+   # Option 1: Python
+   python -m http.server 3000
+   
+   # Option 2: Node.js (if you have serve installed)
+   npx serve -p 3000
+   
+   # Option 3: PHP
+   php -S localhost:3000
+   ```
+
+3. **Access the dashboard**:
+   Open your browser to `http://localhost:3000`
+
+### Frontend Structure
+
+#### HTML (`index.html`)
+- Semantic HTML5 structure
+- Tabbed interface for different streams
+- Control buttons for connection management
+- Statistics cards for key metrics
+- Scrollable data feeds for each stream type
+
+#### JavaScript (`app.js`)
+- `SomniaStreamClient` class for managing SSE connections
+- Automatic reconnection handling
+- Stream switching without page refresh
+- Real-time data parsing and display
+- Memory management (limits stored messages)
+- Utility functions for formatting blockchain data
+
+#### CSS (`styles.css`)
+- Modern gradient design with glassmorphism effects
+- Responsive layout for all screen sizes
+- Smooth animations and transitions
+- Stream-specific color coding
+- Professional typography and spacing
+
+### Available Streams
+
+The frontend provides dedicated views for each stream:
+
+| Stream | Description | Update Frequency |
+|--------|-------------|------------------|
+| **Blocks** | Complete block information with transaction details | 2 seconds |
+| **Pending Txs** | Real-time pending transaction pool | 3 seconds |
+| **Event Logs** | Smart contract event logs | 5 seconds |
+| **Network Stats** | Chain statistics and peer information | 10 seconds |
+| **Gas Price** | Current gas price recommendations | 15 seconds |
+
+### Stream Features
+
+#### Blocks Stream
+- Latest block number and timestamp
+- Gas usage statistics
+- Transaction count
+- Complete block details including hash, parent hash, difficulty
+- Transaction list with values and gas prices
+
+#### Pending Transactions Stream
+- Live pending transaction count
+- Average gas price calculation
+- Transaction details (hash, value, gas)
+- Real-time mempool monitoring
+
+#### Event Logs Stream
+- Recent smart contract events
+- Block range information
+- Log count statistics
+- Event filtering capabilities
+
+#### Network Statistics Stream
+- Chain ID and current block number
+- Peer count and synchronization status
+- Network health indicators
+- Gas price trends
+
+#### Gas Price Stream
+- Current recommended gas prices
+- Price in Wei and Gwei formats
+- Historical price tracking
+- Price change indicators
+
+### Controls and Features
+
+#### Connection Management
+- **Connect Button**: Establishes SSE connection to selected stream
+- **Disconnect Button**: Closes active connections
+- **Status Indicator**: Shows connection state with visual feedback
+- **Auto-reconnect**: Automatically attempts to reconnect on failures
+
+#### Display Options
+- **Stream Tabs**: Switch between different data streams
+- **Auto-scroll**: Toggle automatic scrolling for new messages
+- **Clear Data**: Remove all displayed messages
+- **Message Counter**: Track total messages received
+
+#### Responsive Design
+- **Desktop**: Full-featured dashboard with all controls
+- **Tablet**: Optimized layout with touch-friendly controls
+- **Mobile**: Compact view with essential information
+
+### Customization
+
+#### Server Configuration
+Update the server URL in `app.js`:
+```javascript
+this.serverUrl = 'http://your-server:8080';
+```
+
+#### Styling
+Modify `styles.css` to customize:
+- Color schemes and gradients
+- Animation timings
+- Layout dimensions
+- Typography choices
+
+#### Data Display
+Extend the JavaScript handlers to:
+- Add new data fields
+- Implement custom formatting
+- Create additional visualizations
+- Add filtering capabilities
+
+### Simple Web Client Example
+
+For basic integration, here's a minimal example:
 
 ```html
 <!DOCTYPE html>
@@ -267,6 +420,10 @@ somnia-stream/
 ├── main.go           # Main application file
 ├── go.mod           # Go module definition
 ├── go.sum           # Go module checksums
+├── frontend/         # Frontend demo application
+│   ├── index.html   # Main HTML file
+│   ├── app.js       # JavaScript application
+│   └── styles.css   # CSS styling
 └── README.md        # This file
 ```
 

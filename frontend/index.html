@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Somnia Stream - Real-time Blockchain Data</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-stream"></i>
+                <h1>Somnia Stream</h1>
+            </div>
+            <div class="status-indicator">
+                <span id="connection-status" class="status disconnected">Disconnected</span>
+            </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-stream="blocks">
+                <i class="fas fa-cube"></i>
+                Blocks
+            </button>
+            <button class="tab-btn" data-stream="pending">
+                <i class="fas fa-clock"></i>
+                Pending Txs
+            </button>
+            <button class="tab-btn" data-stream="logs">
+                <i class="fas fa-list"></i>
+                Event Logs
+            </button>
+            <button class="tab-btn" data-stream="network">
+                <i class="fas fa-network-wired"></i>
+                Network Stats
+            </button>
+            <button class="tab-btn" data-stream="gasPrice">
+                <i class="fas fa-gas-pump"></i>
+                Gas Price
+            </button>
+        </nav>
+
+        <main class="main-content">
+            <!-- Controls -->
+            <div class="controls">
+                <button id="connect-btn" class="btn primary">
+                    <i class="fas fa-play"></i>
+                    Connect
+                </button>
+                <button id="disconnect-btn" class="btn secondary" disabled>
+                    <i class="fas fa-stop"></i>
+                    Disconnect
+                </button>
+                <button id="clear-btn" class="btn secondary">
+                    <i class="fas fa-trash"></i>
+                    Clear
+                </button>
+                <div class="auto-scroll">
+                    <label>
+                        <input type="checkbox" id="auto-scroll" checked>
+                        Auto-scroll
+                    </label>
+                </div>
+            </div>
+
+            <!-- Data Display Area -->
+            <div class="data-container">
+                <!-- Blocks Tab -->
+                <div id="blocks-content" class="tab-content active">
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <div class="stat-label">Latest Block</div>
+                            <div id="latest-block-number" class="stat-value">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Block Time</div>
+                            <div id="block-time" class="stat-value">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Gas Used</div>
+                            <div id="gas-used" class="stat-value">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Transactions</div>
+                            <div id="tx-count" class="stat-value">-</div>
+                        </div>
+                    </div>
+                    <div class="data-feed" id="blocks-feed"></div>
+                </div>
+
+                <!-- Pending Transactions Tab -->
+                <div id="pending-content" class="tab-content">
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <div class="stat-label">Pending Count</div>
+                            <div id="pending-count" class="stat-value">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Avg Gas Price</div>
+                            <div id="avg-gas-price" class="stat-value">-</div>
+                        </div>
+                    </div>
+                    <div class="data-feed" id="pending-feed"></div>
+                </div>
+
+                <!-- Event Logs Tab -->
+                <div id="logs-content" class="tab-content">
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <div class="stat-label">Recent Logs</div>
+                            <div id="logs-count" class="stat-value">-</div>
+                        </div>
+                    </div>
+                    <div class="data-feed" id="logs-feed"></div>
+                </div>
+
+                <!-- Network Stats Tab -->
+                <div id="network-content" class="tab-content">
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <div class="stat-label">Chain ID</div>
+                            <div id="chain-id" class="stat-value">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Peer Count</div>
+                            <div id="peer-count" class="stat-value">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Sync Status</div>
+                            <div id="sync-status" class="stat-value">-</div>
+                        </div>
+                    </div>
+                    <div class="data-feed" id="network-feed"></div>
+                </div>
+
+                <!-- Gas Price Tab -->
+                <div id="gasPrice-content" class="tab-content">
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <div class="stat-label">Current Gas Price</div>
+                            <div id="current-gas-price" class="stat-value">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Price in Gwei</div>
+                            <div id="gas-price-gwei" class="stat-value">-</div>
+                        </div>
+                    </div>
+                    <div class="data-feed" id="gasPrice-feed"></div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-info">
+                <span>Connected to: <span id="server-url">http://localhost:8080</span></span>
+                <span>Messages received: <span id="message-count">0</span></span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
