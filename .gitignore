@@ -10,7 +10,6 @@ package-lock.json
 
 # Generated PDFs
 presentation/generated/
-*.pdf
 
 # Go build artifacts
 somnia-stream
