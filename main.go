@@ -15,6 +15,7 @@ import (
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/joho/godotenv"
 	"github.com/nats-io/nats.go"
 	"github.com/rs/cors"
 )
@@ -577,6 +578,13 @@ func (dt *SomniaStream) getStreamSubject(stream string) string {
 }
 
 func main() {
+	// Load environment variables from .env file
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found or error loading .env file, using environment variables and defaults")
+	} else {
+		log.Println("✅ Loaded configuration from .env file")
+	}
+
 	// Initialize configuration
 	config := &Config{
 		RPCEndpoint: getEnv("RPC_ENDPOINT", "https://dream-rpc.somnia.network"),

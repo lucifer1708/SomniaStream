@@ -132,16 +132,39 @@ go build -o somnia-stream main.go
 
 ## ⚙️ Configuration
 
-Configure the application using environment variables:
+Configure the application using environment variables or a `.env` file:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `RPC_ENDPOINT` | `https://dream-rpc.somnia.network` | Ethereum RPC endpoint |
-| `NATS_URL` | `nats://65.21.153.56:4222` | NATS server URL |
-| `NATS_TOKEN` | `mxHF53zHj0GjiZSX` | NATS authentication token |
+| `NATS_URL` | `nats://localhost:4222` | NATS server URL |
+| `NATS_TOKEN` | `nats_token` | NATS authentication token |
 | `SERVER_PORT` | `8080` | HTTP server port |
 
-### Example Configuration
+### Using .env File (Recommended)
+
+1. **Copy the example file**:
+   ```bash
+   cp env.example .env
+   ```
+
+2. **Edit the .env file** with your values:
+   ```bash
+   # Somnia Stream Configuration
+   RPC_ENDPOINT=https://dream-rpc.somnia.network
+   NATS_URL=nats://your-nats-server:4222
+   NATS_TOKEN=your-nats-token
+   SERVER_PORT=8080
+   ```
+
+3. **Run the application** (it will automatically load the .env file):
+   ```bash
+   ./somnia-stream
+   ```
+
+### Using Environment Variables
+
+Alternatively, you can set environment variables directly:
 
 ```bash
 export RPC_ENDPOINT="https://dream-rpc.somnia.network"
@@ -149,6 +172,8 @@ export NATS_URL="nats://your-nats-server:4222"
 export NATS_TOKEN="your-nats-token"
 export SERVER_PORT="8080"
 ```
+
+**Note**: Environment variables take precedence over .env file values.
 
 ## 🚀 Usage
 
@@ -420,10 +445,14 @@ somnia-stream/
 ├── main.go           # Main application file
 ├── go.mod           # Go module definition
 ├── go.sum           # Go module checksums
+├── .gitignore       # Git ignore rules
+├── env.example      # Environment variables example
 ├── frontend/         # Frontend demo application
 │   ├── index.html   # Main HTML file
 │   ├── app.js       # JavaScript application
-│   └── styles.css   # CSS styling
+│   ├── styles.css   # CSS styling
+│   ├── demo.sh      # Frontend demo script
+│   └── README.md    # Frontend documentation
 └── README.md        # This file
 ```
 
