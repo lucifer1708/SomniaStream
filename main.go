@@ -28,7 +28,7 @@ type Config struct {
 }
 
 // DevTool represents the main application
-type DevTool struct {
+type SomniaStream struct {
 	config    *Config
 	rpcClient *rpc.Client
 	ethClient *ethclient.Client
@@ -39,7 +39,7 @@ type DevTool struct {
 }
 
 // NewDevTool creates a new DevTool instance
-func NewDevTool(config *Config) (*DevTool, error) {
+func NewSomniaStream(config *Config) (*SomniaStream, error) {
 	// Connect to RPC
 	rpcClient, err := rpc.Dial(config.RPCEndpoint)
 	if err != nil {
@@ -96,7 +96,7 @@ func NewDevTool(config *Config) (*DevTool, error) {
 		c.Next()
 	})
 
-	devtool := &DevTool{
+	devtool := &SomniaStream{
 		config:    config,
 		rpcClient: rpcClient,
 		ethClient: ethClient,
@@ -115,7 +115,7 @@ func NewDevTool(config *Config) (*DevTool, error) {
 }
 
 // setupJetStreams creates the necessary JetStream streams
-func (dt *DevTool) setupJetStreams() error {
+func (dt *SomniaStream) setupJetStreams() error {
 	log.Println("Setting up JetStream streams...")
 
 	streams := []struct {
@@ -170,7 +170,7 @@ func (dt *DevTool) setupJetStreams() error {
 }
 
 // Start starts the devtool server and RPC monitoring
-func (dt *DevTool) Start(ctx context.Context) error {
+func (dt *SomniaStream) Start(ctx context.Context) error {
 	// Setup routes
 	// dt.router.GET("/ws/:stream", dt.handleWebSocketStream)
 	dt.router.GET("/sse/:stream", dt.handleSSEStream)
@@ -186,7 +186,7 @@ func (dt *DevTool) Start(ctx context.Context) error {
 	return dt.router.Run(":" + dt.config.ServerPort)
 }
 
-func (dt *DevTool) monitorRPC(ctx context.Context) {
+func (dt *SomniaStream) monitorRPC(ctx context.Context) {
 	log.Println("Starting comprehensive RPC monitoring...")
 
 	// Start multiple monitoring goroutines for different data types
@@ -202,7 +202,7 @@ func (dt *DevTool) monitorRPC(ctx context.Context) {
 }
 
 // Monitor new blocks
-func (dt *DevTool) monitorBlocks(ctx context.Context) {
+func (dt *SomniaStream) monitorBlocks(ctx context.Context) {
 	ticker := time.NewTicker(2 * time.Second)
 	defer ticker.Stop()
 
@@ -221,7 +221,7 @@ func (dt *DevTool) monitorBlocks(ctx context.Context) {
 }
 
 // Monitor pending transactions
-func (dt *DevTool) monitorPendingTransactions(ctx context.Context) {
+func (dt *SomniaStream) monitorPendingTransactions(ctx context.Context) {
 	ticker := time.NewTicker(3 * time.Second)
 	defer ticker.Stop()
 
@@ -238,7 +238,7 @@ func (dt *DevTool) monitorPendingTransactions(ctx context.Context) {
 }
 
 // Monitor logs (events)
-func (dt *DevTool) monitorLogs(ctx context.Context) {
+func (dt *SomniaStream) monitorLogs(ctx context.Context) {
 	ticker := time.NewTicker(5 * time.Second)
 	defer ticker.Stop()
 
@@ -255,7 +255,7 @@ func (dt *DevTool) monitorLogs(ctx context.Context) {
 }
 
 // Monitor network statistics
-func (dt *DevTool) monitorNetworkStats(ctx context.Context) {
+func (dt *SomniaStream) monitorNetworkStats(ctx context.Context) {
 	ticker := time.NewTicker(10 * time.Second)
 	defer ticker.Stop()
 
@@ -272,7 +272,7 @@ func (dt *DevTool) monitorNetworkStats(ctx context.Context) {
 }
 
 // Monitor gas price
-func (dt *DevTool) monitorGasPrice(ctx context.Context) {
+func (dt *SomniaStream) monitorGasPrice(ctx context.Context) {
 	ticker := time.NewTicker(15 * time.Second)
 	defer ticker.Stop()
 
@@ -291,7 +291,7 @@ func (dt *DevTool) monitorGasPrice(ctx context.Context) {
 }
 
 // Publish latest block with transaction details
-func (dt *DevTool) publishLatestBlock(lastBlockNumber *uint64) error {
+func (dt *SomniaStream) publishLatestBlock(lastBlockNumber *uint64) error {
 	log.Printf("[BLOCKS] Fetching latest block from Somnia RPC...")
 	block, err := dt.ethClient.BlockByNumber(context.Background(), nil)
 	if err != nil {
@@ -358,7 +358,7 @@ func (dt *DevTool) publishLatestBlock(lastBlockNumber *uint64) error {
 }
 
 // Publish pending transactions
-func (dt *DevTool) publishPendingTransactions() error {
+func (dt *SomniaStream) publishPendingTransactions() error {
 	log.Printf("[PENDING] Fetching pending transactions from Somnia RPC...")
 	var pendingTxs []map[string]interface{}
 
@@ -396,7 +396,7 @@ func (dt *DevTool) publishPendingTransactions() error {
 }
 
 // Publish recent logs
-func (dt *DevTool) publishRecentLogs() error {
+func (dt *SomniaStream) publishRecentLogs() error {
 	// Get latest block number
 	latestBlock, err := dt.ethClient.BlockByNumber(context.Background(), nil)
 	if err != nil {
@@ -434,7 +434,7 @@ func (dt *DevTool) publishRecentLogs() error {
 }
 
 // Publish network statistics
-func (dt *DevTool) publishNetworkStats() error {
+func (dt *SomniaStream) publishNetworkStats() error {
 	var chainId, blockNumber, gasPrice, peerCount string
 
 	// Get various network stats
@@ -461,7 +461,7 @@ func (dt *DevTool) publishNetworkStats() error {
 }
 
 // Publish current gas price
-func (dt *DevTool) publishGasPrice() error {
+func (dt *SomniaStream) publishGasPrice() error {
 	gasPrice, err := dt.ethClient.SuggestGasPrice(context.Background())
 	if err != nil {
 		return err
@@ -513,7 +513,7 @@ func min(a, b int) int {
 // }
 
 // Handle SSE for specific stream
-func (dt *DevTool) handleSSEStream(c *gin.Context) {
+func (dt *SomniaStream) handleSSEStream(c *gin.Context) {
 	stream := c.Param("stream")
 	subject := dt.getStreamSubject(stream)
 
@@ -534,7 +534,7 @@ func (dt *DevTool) handleSSEStream(c *gin.Context) {
 }
 
 // List available streams
-func (dt *DevTool) listStreams(c *gin.Context) {
+func (dt *SomniaStream) listStreams(c *gin.Context) {
 	streams := map[string]string{
 		"blocks":        "eth.blocks.full - Full block data with transactions (JetStream)",
 		"pending":       "eth.pending - Pending transactions (JetStream)",
@@ -557,7 +557,7 @@ func (dt *DevTool) listStreams(c *gin.Context) {
 }
 
 // Get NATS subject for stream name
-func (dt *DevTool) getStreamSubject(stream string) string {
+func (dt *SomniaStream) getStreamSubject(stream string) string {
 	switch stream {
 	case "blocks":
 		return "eth.blocks.full"
@@ -586,7 +586,7 @@ func main() {
 	}
 
 	// Initialize the devtool
-	devtool, err := NewDevTool(config)
+	devtool, err := NewSomniaStream(config)
 	if err != nil {
 		log.Fatalf("Failed to initialize devtool: %v", err)
 	}

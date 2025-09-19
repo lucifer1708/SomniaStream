@@ -1,4 +1,4 @@
-module devtool
+module somnia-stream
 
 go 1.24.6
 
